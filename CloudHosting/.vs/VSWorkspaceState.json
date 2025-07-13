@@ -2,6 +2,10 @@
   "ExpandedNodes": [
     ""
   ],
+<<<<<<< HEAD
   "SelectedNode": "\\CloudHosting.Application",
+=======
+  "SelectedNode": "\\CloudHosting.Presentation",
+>>>>>>> b5cc780 (update1)
   "PreviewInSolutionExplorer": false
 }
