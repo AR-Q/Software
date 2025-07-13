@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Egj1aEHWdlo=",
+  "success": true,
+  "projectFilePath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.Presentation\\CloudHosting.Presentation.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0-preview.2.25164.1\\microsoft.aspnetcore.openapi.10.0.0-preview.2.25164.1.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.13\\microsoft.windowsdesktop.app.ref.8.0.13.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.13\\microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.13\\microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.13\\microsoft.netcore.app.host.win-x64.8.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}

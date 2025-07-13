@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "A4JEUpCkU0c=",
+  "success": true,
+  "projectFilePath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.Infrastructure\\CloudHosting.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.13\\microsoft.windowsdesktop.app.ref.8.0.13.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.13\\microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
+    "C:\\Users\\arjma\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.13\\microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}
