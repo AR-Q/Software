@@ -38,11 +38,9 @@ namespace WebApplication3.Infrastructure
             return imageName;
         }
 
-        // Helper: create a tar stream from a directory
         private Stream CreateTarStream(string directory)
         {
-            // Use a tar library like SharpZipLib or your own implementation
-            // For example, using SharpZipLib:
+            //SharpZipLib
             var memStream = new MemoryStream();
             using (var tarOutput = new ICSharpCode.SharpZipLib.Tar.TarOutputStream(memStream, System.Text.Encoding.UTF8))
             {
@@ -99,7 +97,7 @@ namespace WebApplication3.Infrastructure
 
         public Task<ResourceInfo> GetResourceInfoAsync()
         {
-            // Placeholder: In real scenario, query system resources
+            // Placeholder: query system resources
             return Task.FromResult(new ResourceInfo
             {
                 AvailableRamMb = 16000,

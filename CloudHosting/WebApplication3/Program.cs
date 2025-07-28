@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IDockerService, DockerService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-// If Swashbuckle.AspNetCore is not installed, this will fail. Install via NuGet if needed.
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
