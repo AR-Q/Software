@@ -1,11 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WebApplication3"
   ],
-<<<<<<< HEAD
-  "SelectedNode": "\\CloudHosting.Application",
-=======
-  "SelectedNode": "\\CloudHosting.Presentation",
->>>>>>> b5cc780 (update1)
+  "SelectedNode": "\\WebApplication3.sln",
   "PreviewInSolutionExplorer": false
 }

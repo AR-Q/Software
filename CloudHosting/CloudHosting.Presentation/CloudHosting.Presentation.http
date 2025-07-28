@@ -1,6 +1,0 @@
-@CloudHosting.Presentation_HostAddress = http://localhost:5241
-
-GET {{CloudHosting.Presentation_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -1,0 +1,7 @@
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.csproj.AssemblyReference.cache
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.AssemblyInfoInputs.cache
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.AssemblyInfo.cs
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.csproj.CoreCompileInputs.cache
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\arjma\Documents\Project\WebApplication3\WebApplication3\obj\Debug\net10.0\WebApplication3.MvcApplicationPartsAssemblyInfo.cache
