@@ -1,0 +1,59 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "StorageService.Domain/1.0.0": {
+        "dependencies": {
+          "AWSSDK.S3": "3.7.415.21"
+        },
+        "runtime": {
+          "StorageService.Domain.dll": {}
+        }
+      },
+      "AWSSDK.Core/3.7.402.22": {
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.402.22"
+          }
+        }
+      },
+      "AWSSDK.S3/3.7.415.21": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.402.22"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.S3.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.415.21"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "StorageService.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AWSSDK.Core/3.7.402.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Mb7iZWyKdVgGYWhNo09yhW6ieliwGVIAsFSL0OhoyJ/qZXJd4OvBAhOtqpXT06bs4ABTc4QzGYmKeFHvdXqxJQ==",
+      "path": "awssdk.core/3.7.402.22",
+      "hashPath": "awssdk.core.3.7.402.22.nupkg.sha512"
+    },
+    "AWSSDK.S3/3.7.415.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dki6IkWUuJW5OCnbTQ7f0UFOgAKNKKDAYyHQFXtBVPz/GN8Dl7sp5jNc0obkoNJxMm+4j2pjfXr0wpKv7Bec2g==",
+      "path": "awssdk.s3/3.7.415.21",
+      "hashPath": "awssdk.s3.3.7.415.21.nupkg.sha512"
+    }
+  }
+}

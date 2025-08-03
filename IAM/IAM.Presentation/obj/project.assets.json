@@ -2857,11 +2857,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\IAM.Presentation.csproj",
+      "projectUniqueName": "F:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\IAM.Presentation.csproj",
       "projectName": "IAM.Presentation",
-      "projectPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\IAM.Presentation.csproj",
+      "projectPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\IAM.Presentation.csproj",
       "packagesPath": "C:\\Users\\enggh\\.nuget\\packages\\",
-      "outputPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\obj\\",
+      "outputPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Presentation\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2883,14 +2883,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\University\\Term 6\\Software\\IAM\\IAM.Application\\IAM.Application.csproj": {
-              "projectPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Application\\IAM.Application.csproj"
+            "F:\\University\\Term 6\\Software\\IAM\\IAM.Application\\IAM.Application.csproj": {
+              "projectPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Application\\IAM.Application.csproj"
             },
-            "E:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj": {
-              "projectPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj"
+            "F:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj": {
+              "projectPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj"
             },
-            "E:\\University\\Term 6\\Software\\IAM\\IAM.Infrastructure\\IAM.Infrastructure.csproj": {
-              "projectPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Infrastructure\\IAM.Infrastructure.csproj"
+            "F:\\University\\Term 6\\Software\\IAM\\IAM.Infrastructure\\IAM.Infrastructure.csproj": {
+              "projectPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Infrastructure\\IAM.Infrastructure.csproj"
             }
           }
         }
@@ -2899,7 +2899,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net6.0": {
@@ -2959,7 +2965,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

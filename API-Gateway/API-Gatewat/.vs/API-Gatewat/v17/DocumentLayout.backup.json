@@ -1,0 +1,87 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|f:\\university\\term 6\\software\\api-gateway\\api-gatewat\\api-gatewat\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|solutionrelative:api-gatewat\\ocelot.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|f:\\university\\term 6\\software\\api-gateway\\api-gatewat\\api-gatewat\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|solutionrelative:api-gatewat\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|f:\\university\\term 6\\software\\api-gateway\\api-gatewat\\api-gatewat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7A9B2793-B537-4F87-AB0B-15E10276626F}|API-Gatewat\\API-Gatewat.csproj|solutionrelative:api-gatewat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 370,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\appsettings.json",
+              "RelativeDocumentMoniker": "API-Gatewat\\appsettings.json",
+              "ToolTip": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\appsettings.json",
+              "RelativeToolTip": "API-Gatewat\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-03T07:32:49.114Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\Program.cs",
+              "RelativeDocumentMoniker": "API-Gatewat\\Program.cs",
+              "ToolTip": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\Program.cs",
+              "RelativeToolTip": "API-Gatewat\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-03T07:24:28.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ocelot.json",
+              "DocumentMoniker": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\ocelot.json",
+              "RelativeDocumentMoniker": "API-Gatewat\\ocelot.json",
+              "ToolTip": "F:\\University\\Term 6\\Software\\API-Gateway\\API-Gatewat\\API-Gatewat\\ocelot.json",
+              "RelativeToolTip": "API-Gatewat\\ocelot.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-03T07:23:48.472Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

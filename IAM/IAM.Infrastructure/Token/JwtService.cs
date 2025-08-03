@@ -57,7 +57,8 @@ namespace IAM.Infrastructure.Token
                 {
                     ID = Convert.ToInt32(tokens.Claims.First(c => c.Type.Equals("Id")).Value),
                     Role = tokens.Claims.First(c => c.Type.Equals("Role")).Value,
-                    Email = tokens.Claims.First(c => c.Type.Equals("Email")).Value
+                    Email = tokens.Claims.First(c => c.Type.Equals("Email")).Value,
+                    User = null
                 };
 
             }

@@ -19,7 +19,7 @@ namespace IAM.Application
             services.AddScoped<IUserRegisterService, UserRegisterService>();
             services.AddScoped<IUserUpdateService, UserUpdateService>();
             services.AddScoped<IUserVerifyService, UserVerifyService>();
-            services.AddSingleton<ITokenCheck, TokenCheck>();
+            services.AddTransient<ITokenCheck, TokenCheck>();
             return services;
         }
     }

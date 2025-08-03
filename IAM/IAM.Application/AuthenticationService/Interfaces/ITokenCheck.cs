@@ -9,6 +9,6 @@ namespace IAM.Application.AuthenticationService.Interfaces
 {
     public interface ITokenCheck
     {
-        TokenCheckVM hanle(string token);
+        Task<TokenCheckVM> hanle(string token);
     }
 }

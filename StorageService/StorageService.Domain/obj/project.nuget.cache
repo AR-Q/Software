@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "xYacZgIA+UQ=",
+  "success": true,
+  "projectFilePath": "F:\\University\\Term 6\\Software\\StorageService\\StorageService.Domain\\StorageService.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\enggh\\.nuget\\packages\\awssdk.core\\3.7.402.22\\awssdk.core.3.7.402.22.nupkg.sha512",
+    "C:\\Users\\enggh\\.nuget\\packages\\awssdk.s3\\3.7.415.21\\awssdk.s3.3.7.415.21.nupkg.sha512"
+  ],
+  "logs": []
+}

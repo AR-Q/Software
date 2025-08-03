@@ -1,0 +1,12 @@
+F:\University\Term 6\Software\IAM\IAM.Contracts\bin\Release\net6.0\IAM.Contracts.deps.json
+F:\University\Term 6\Software\IAM\IAM.Contracts\bin\Release\net6.0\IAM.Contracts.dll
+F:\University\Term 6\Software\IAM\IAM.Contracts\bin\Release\net6.0\IAM.Contracts.pdb
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.csproj.AssemblyReference.cache
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.AssemblyInfoInputs.cache
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.AssemblyInfo.cs
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.csproj.CoreCompileInputs.cache
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.dll
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\refint\IAM.Contracts.dll
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\IAM.Contracts.pdb
+F:\University\Term 6\Software\IAM\IAM.Contracts\obj\Release\net6.0\ref\IAM.Contracts.dll

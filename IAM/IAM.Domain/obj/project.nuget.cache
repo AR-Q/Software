@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vk6Ip7Zvbum9kiaoymFI9cFbLFT/sXZp5VvYJxvLj5Hb0XxqXspMTQ0VrpWzWGW3IVKZ2PuGYnPuHdnsafRBlQ==",
+  "dgSpecHash": "bfI6E5B9Tf8=",
   "success": true,
-  "projectFilePath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj",
+  "projectFilePath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Domain\\IAM.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\enggh\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\enggh\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

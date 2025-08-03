@@ -89,7 +89,7 @@ namespace IAM.Presentation.Controllers
 
             UserAuthenticationResult result = await _userRegisterService.Handle(userRegister);
 
-            if (result.Token == "phone")
+            if (result.Token == "email")
             {
                 return BadRequest("Phone number is Registered");
             }
@@ -131,14 +131,14 @@ namespace IAM.Presentation.Controllers
         #endregion
 
         [HttpPost("checkToken")]
-        public ActionResult CheckToken([FromBody] string token)
+        public async Task<ActionResult> CheckToken([FromBody] TokenRequest request)
         {
-            var res = _tokenCheck.hanle(token);
+            var res = await _tokenCheck.hanle(request.Token);
             if (res != null)
             {
                 return Ok(res);
             }
-            return BadRequest();
+            return Unauthorized();
         }
     }
 }

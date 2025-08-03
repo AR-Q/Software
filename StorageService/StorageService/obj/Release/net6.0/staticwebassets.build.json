@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "cj2kABbxXyLsENMkc9Xg93m7ZzXHcsTnltQpDltFbD4=",
+  "Source": "StorageService.Presentation",
+  "BasePath": "_content/StorageService.Presentation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

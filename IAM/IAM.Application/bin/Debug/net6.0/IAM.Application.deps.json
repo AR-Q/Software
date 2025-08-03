@@ -606,7 +606,10 @@
           "StackExchange.Redis": "2.8.16"
         },
         "runtime": {
-          "IAM.Contracts.dll": {}
+          "IAM.Contracts.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "IAM.Domain/1.0.0": {
@@ -618,7 +621,10 @@
           "StackExchange.Redis": "2.8.16"
         },
         "runtime": {
-          "IAM.Domain.dll": {}
+          "IAM.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
