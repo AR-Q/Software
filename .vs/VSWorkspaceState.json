@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\CloudHosting",
-    "\\CloudHosting\\CloudHosting.Application"
+    ""
   ],
-  "SelectedNode": "\\CloudHosting\\CloudHosting.Application\\Class1.cs",
+  "SelectedNode": "\\CloudHosting.sln",
   "PreviewInSolutionExplorer": false
 }
