@@ -36,12 +36,11 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddHealthChecks()
     .AddCheck("DockerEngine", () => {
         try {
-            // Just check if Docker engine is accessible
             var dockerClient = new Docker.DotNet.DockerClientConfiguration(
                 new Uri(configuration["Docker:ConnectionString"] ?? "npipe://./pipe/docker_engine"))
                 .CreateClient();
             
-            // If we get here, connection was successful
+            // connection successful
             return Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy();
         } 
         catch (Exception ex) {
@@ -49,13 +48,13 @@ builder.Services.AddHealthChecks()
         }
     });
 
-// Add Swagger
+//  Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "CloudHosting API", Version = "v1" });
     
-    // Add JWT Authentication to Swagger
+    // JWT Authentication to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
@@ -81,37 +80,36 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Register services
+// services
 builder.Services.AddSingleton<IDockerService, DockerService>();
 builder.Services.AddSingleton<ICloudPlanService, CloudPlanService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddControllers();var app = builder.Build();
 
-// Configure error handling first
+// error handling
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     
-    // Enable Swagger UI in development
+    // Swagger UI
     app.UseSwagger();
     app.UseSwaggerUI(c => {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "CloudHosting API v1");
     });
 }
 
-// Add health checks endpoint
+// health checks endpoint
 app.MapHealthChecks("/health");
 
-// Configure authentication middleware
+// authentication middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
 
-// Log that application has started
 app.Lifetime.ApplicationStarted.Register(() => {
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
     logger.LogInformation("CloudHosting application started successfully");

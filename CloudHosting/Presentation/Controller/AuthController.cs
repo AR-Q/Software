@@ -27,15 +27,14 @@ namespace CloudHosting.Presentation.Controller
         {
             _logger.LogInformation("Login attempt for user: {Username}", request.Username);
             
-            // Simple validation - in a real app, verify credentials against a database
+            // Simple validation
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
             {
                 _logger.LogWarning("Login failed: Empty username or password");
                 return BadRequest(new { Error = "Username and password are required" });
             }
 
-            // For demo purposes, accept any non-empty credentials
-            // In production, validate against your user store
+            // demo validation
             if (request.Username == "demo" && request.Password == "password")
             {
                 var token = GenerateJwtToken(request.Username);
@@ -66,7 +65,7 @@ namespace CloudHosting.Presentation.Controller
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.NameIdentifier, "1") // Dummy user ID
+                    new Claim(ClaimTypes.NameIdentifier, "1") // change
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _configuration["Jwt:Issuer"] ?? "CloudHosting",

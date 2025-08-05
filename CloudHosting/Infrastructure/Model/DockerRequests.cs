@@ -21,7 +21,6 @@ namespace CloudHosting.Infrastructure.Model
         public string StorageUsed { get; set; } = "Unknown";
     }
     
-    // Define CloudPlan class here if it's not defined elsewhere
     public class CloudPlan
     {
         public int Id { get; set; }

@@ -159,13 +159,13 @@ namespace CloudHosting.Infrastructure.Services
                 
                 var info = await _client.System.GetSystemInfoAsync();
                 
-                // Try to get more detailed resource information
+                // detailed resource information
                 var containers = await _client.Containers.ListContainersAsync(new ContainersListParameters
                 {
-                    All = false, // Only running containers
+                    All = false, // only running containers
                 });
                 
-                // Calculate total CPU and memory usage
+                // CPU and memory usage
                 double totalCpuPercent = 0;
                 long totalMemoryUsage = 0;
                 
@@ -173,15 +173,12 @@ namespace CloudHosting.Infrastructure.Services
                 {
                     try 
                     {
-                        // Use the correct overload for GetContainerStatsAsync
                         var statsStream = await _client.Containers.GetContainerStatsAsync(container.ID, false);
                         
-                        // Read and parse stats
                         using (var reader = new StreamReader(statsStream))
                         {
                             var statsJson = await reader.ReadToEndAsync();
-                            // Parse stats if needed - simplified here
-                            totalMemoryUsage += 100 * 1024 * 1024; // Placeholder value
+                            totalMemoryUsage += 100 * 1024 * 1024; // Placeholder
                         }
                     }
                     catch (Exception ex)
@@ -246,7 +243,7 @@ namespace CloudHosting.Infrastructure.Services
                 {
                     tarArchive.IsStreamOwner = false;
                     
-                    // Add all files in the directory to the tar archive
+                    // all files in the directory added to the tar
                     foreach (var filePath in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
                     {
                         var relativePath = Path.GetRelativePath(directory, filePath).Replace('\\', '/');
