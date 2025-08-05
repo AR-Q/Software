@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using CloudHosting.Infrastructure.Model;
 using CloudHosting.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CloudHosting.Presentation.Controller
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class DockerController : ControllerBase

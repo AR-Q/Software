@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\CloudHosting\\CloudHosting.csproj": {}
+    "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\CloudHosting\\CloudHosting.csproj": {
+    "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\CloudHosting\\CloudHosting.csproj",
+        "projectUniqueName": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "projectName": "CloudHosting",
-        "projectPath": "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\CloudHosting\\CloudHosting.csproj",
+        "projectPath": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "packagesPath": "C:\\Users\\arjma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\CloudHosting\\obj\\",
+        "outputPath": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -54,9 +54,17 @@
               "target": "Package",
               "version": "[3.125.15, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "SharpZipLib": {
+              "target": "Package",
+              "version": "[1.4.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

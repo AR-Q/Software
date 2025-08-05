@@ -2,23 +2,32 @@ namespace CloudHosting.Infrastructure.Model
 {
     public class BuildImageRequest
     {
-        public string BuildContextDir { get; set; }
-        public string ImageName { get; set; }
+        public required string BuildContextDir { get; set; }
+        public required string ImageName { get; set; }
     }
 
     public class RunContainerRequest
     {
-        public string ImageName { get; set; }
-        public string ContainerName { get; set; }
+        public required string ImageName { get; set; }
+        public required string ContainerName { get; set; }
         public int PlanId { get; set; }
     }
 
     public class ResourceInfo
     {
-        public string AvailableRam { get; set; }
-        public string InUseRam { get; set; }
-        public string CpuUtilization { get; set; }
-        public string StorageUsed { get; set; }
+        public string AvailableRam { get; set; } = "Unknown";
+        public string InUseRam { get; set; } = "Unknown";
+        public string CpuUtilization { get; set; } = "Unknown";
+        public string StorageUsed { get; set; } = "Unknown";
     }
     
+    // Define CloudPlan class here if it's not defined elsewhere
+    public class CloudPlan
+    {
+        public int Id { get; set; }
+        public required string Name { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public int MaxCpuCores { get; set; } = 1;
+        public long MaxMemoryMB { get; set; } = 512;
+    }
 }
