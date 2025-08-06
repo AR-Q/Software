@@ -1,4 +1,3 @@
-// Core/Entities/User.cs
 namespace CloudHosting.Core.Entities
 {
     public class User
@@ -10,7 +9,6 @@ namespace CloudHosting.Core.Entities
     }
 }
 
-// Core/Entities/CloudPlan.cs
 namespace CloudHosting.Core.Entities
 {
     public class CloudPlan
@@ -23,7 +21,6 @@ namespace CloudHosting.Core.Entities
     }
 }
 
-// Core/Entities/FileUpload.cs
 namespace CloudHosting.Core.Entities
 {
     public class FileUpload

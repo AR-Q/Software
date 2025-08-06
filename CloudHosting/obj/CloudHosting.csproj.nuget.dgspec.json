@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {}
+    "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {}
   },
   "projects": {
-    "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {
+    "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
+        "projectUniqueName": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "projectName": "CloudHosting",
-        "projectPath": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
+        "projectPath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "packagesPath": "C:\\Users\\arjma\\.nuget\\packages\\",
-        "outputPath": "c:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\obj\\",
+        "outputPath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -62,6 +62,22 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.Extensions.Diagnostics.HealthChecks": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "SharpZipLib": {
               "target": "Package",
               "version": "[1.4.2, )"
@@ -69,6 +85,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.0.3, )"
             }
           },
           "imports": [

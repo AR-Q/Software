@@ -1,4 +1,4 @@
-using CloudHosting.Infrastructure.Model;
+using CloudHosting.Core.Entities;
 
 namespace CloudHosting.Core.Interfaces
 {
@@ -8,6 +8,6 @@ namespace CloudHosting.Core.Interfaces
         Task<string> RunContainerAsync(string imageName, string containerName, CloudPlan plan);
         Task<bool> StopContainerAsync(string containerId);
         Task<string> GetContainerLogsAsync(string containerId);
-        Task<ResourceInfo> GetResourceInfoAsync();
+        Task<Infrastructure.Model.ResourceInfo> GetResourceInfoAsync();
     }
 }

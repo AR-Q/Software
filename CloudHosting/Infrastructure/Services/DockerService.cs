@@ -1,9 +1,9 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
-using CloudHosting.Infrastructure.Model;
 using CloudHosting.Core.Interfaces;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Text;
+using CloudHosting.Core.Entities;
 
 namespace CloudHosting.Infrastructure.Services 
 {
@@ -137,12 +137,12 @@ namespace CloudHosting.Infrastructure.Services
                 };
 
                 // Using the updated API call
-                using var logs = await _client.Containers.GetContainerLogsAsync(containerId, true, parameters);
-                using var reader = new StreamReader(logs);  
-                var logContent = await reader.ReadToEndAsync();
+                using var logs = _client.Containers.GetContainerLogsAsync(containerId, true, parameters);
+                using var reader = await logs;  
+                var logContent = await reader.ReadOutputToEndAsync(CancellationToken.None);
                 
-                _logger.LogDebug("Retrieved {Length} bytes of logs for container {ContainerId}", logContent.Length, containerId);
-                return logContent;
+                _logger.LogDebug("Retrieved {Length} bytes of logs for container {ContainerId}", logContent.stdout.Length, containerId);
+                return logContent.stdout;
             }
             catch (Exception ex)
             {
@@ -151,7 +151,7 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        public async Task<ResourceInfo> GetResourceInfoAsync()
+        public async Task<Model.ResourceInfo> GetResourceInfoAsync()
         {
             try
             {
@@ -173,7 +173,8 @@ namespace CloudHosting.Infrastructure.Services
                 {
                     try 
                     {
-                        var statsStream = await _client.Containers.GetContainerStatsAsync(container.ID, false);
+
+                        var statsStream = await _client.Containers.GetContainerStatsAsync(container.ID, new ContainerStatsParameters{},CancellationToken.None);
                         
                         using (var reader = new StreamReader(statsStream))
                         {
@@ -187,7 +188,7 @@ namespace CloudHosting.Infrastructure.Services
                     }
                 }
                 
-                var resourceInfo = new ResourceInfo
+                var resourceInfo = new Model.ResourceInfo
                 {
                     AvailableRam = $"{info.MemTotal / (1024 * 1024 * 1024)}GB",
                     InUseRam = $"{totalMemoryUsage / (1024 * 1024)}MB", 
