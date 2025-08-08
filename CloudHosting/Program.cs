@@ -64,6 +64,11 @@ app.MapHealthChecks("/health");
 app.UseHttpsRedirection();
 app.MapControllers();
 
+if (app.Environment.IsDevelopment())
+{
+    VerifyUserAttribute.isDev = true;
+}
+
 app.Lifetime.ApplicationStarted.Register(() => {
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
     logger.LogInformation("CloudHosting application started successfully");

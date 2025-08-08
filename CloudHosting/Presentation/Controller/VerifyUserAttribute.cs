@@ -6,6 +6,7 @@ using System.Text.Json;
 
 public class VerifyUserAttribute : Attribute, IAsyncActionFilter
 {
+    public static bool isDev = false;
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var httpClient = context.HttpContext.RequestServices.GetRequiredService<IHttpClientFactory>().CreateClient("iam");
@@ -23,14 +24,16 @@ public class VerifyUserAttribute : Attribute, IAsyncActionFilter
 
         try
         {
-                var json = JsonSerializer.Serialize(new { token });
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            //var response = await httpClient.PostAsync("/api/auth/checkToken", content);
             var response = new HttpResponseMessage();
-
-            if (token == "mytoken")
+            var json = JsonSerializer.Serialize(new { token });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            if (isDev)
             {
                 response.StatusCode = System.Net.HttpStatusCode.OK;
+            }
+            else
+            {
+                response = await httpClient.PostAsync("/api/auth/checkToken", content);
             }
 
             if (!response.IsSuccessStatusCode)
