@@ -27,7 +27,7 @@ namespace IAM.Infrastructure
             services.AddDbContext<SQLServerDataContext>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
-            services.AddTransient<IJwtService, JwtService>();
+            services.AddSingleton<IJwtService, JwtService>();
             services.AddScoped<ICodeGenerator, CodeGenerator>();
             services.AddScoped<IHasher, Hasher>();
             services.AddScoped<ICachingContext, RedisContext>();

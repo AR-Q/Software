@@ -43,14 +43,14 @@ namespace IAM.Application.AuthenticationService
             // some more checks like national Id
             if (await _adminRepository.Any(userRegister.Email) || await _userRepository.Any(userRegister.Email))
             {
-                return new UserAuthenticationResult() { User = null, Token = "email"};
+                return new UserAuthenticationResult() { User = null, Token = "phone"};
             }
 
             User user = new User()
             {
                 Email = userRegister.Email,
-                FirstName = "-",
-                LastName = "-",
+                FirstName = userRegister.FirstName,
+                LastName = userRegister.LastName,
                 MediaId = 0,
                 Password = _hasher.Hash(userRegister.Password),
                 RegisterDate = DateTime.Now,

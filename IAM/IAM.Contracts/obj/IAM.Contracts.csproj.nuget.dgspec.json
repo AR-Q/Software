@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj": {}
+    "E:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj": {}
   },
   "projects": {
-    "F:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj": {
+    "E:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj",
+        "projectUniqueName": "E:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj",
         "projectName": "IAM.Contracts",
-        "projectPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj",
+        "projectPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\IAM.Contracts.csproj",
         "packagesPath": "C:\\Users\\enggh\\.nuget\\packages\\",
-        "outputPath": "F:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\obj\\",
+        "outputPath": "E:\\University\\Term 6\\Software\\IAM\\IAM.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -39,13 +39,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net6.0": {
@@ -80,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

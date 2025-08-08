@@ -28,12 +28,14 @@ builder.Services.AddSwaggerGen();
 //builder.Logging.AddConsole();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5173") // Replace with allowed origins
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              ;
     });
+
 });
 
 
@@ -46,10 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 

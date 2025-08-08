@@ -571,10 +571,7 @@
           "StackExchange.Redis": "2.8.16"
         },
         "runtime": {
-          "IAM.Application.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "IAM.Application.dll": {}
         }
       },
       "IAM.Contracts/1.0.0": {
@@ -584,10 +581,7 @@
           "StackExchange.Redis": "2.8.16"
         },
         "runtime": {
-          "IAM.Contracts.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "IAM.Contracts.dll": {}
         }
       },
       "IAM.Domain/1.0.0": {
@@ -599,10 +593,7 @@
           "StackExchange.Redis": "2.8.16"
         },
         "runtime": {
-          "IAM.Domain.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "IAM.Domain.dll": {}
         }
       }
     }
