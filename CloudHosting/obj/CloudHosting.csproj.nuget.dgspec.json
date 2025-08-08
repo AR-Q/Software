@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arjma\\Documents\\Project\\WebApplication4\\CloudHosting.csproj": {}
+    "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arjma\\Documents\\Project\\WebApplication4\\CloudHosting.csproj": {
+    "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arjma\\Documents\\Project\\WebApplication4\\CloudHosting.csproj",
+        "projectUniqueName": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "projectName": "CloudHosting",
-        "projectPath": "C:\\Users\\arjma\\Documents\\Project\\WebApplication4\\CloudHosting.csproj",
+        "projectPath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\CloudHosting.csproj",
         "packagesPath": "C:\\Users\\arjma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arjma\\Documents\\Project\\WebApplication4\\obj\\",
+        "outputPath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
