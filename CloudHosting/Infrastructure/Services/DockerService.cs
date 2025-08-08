@@ -1,13 +1,12 @@
+using CloudHosting.Infrastructure.Model;
 using Docker.DotNet;
 using Docker.DotNet.Models;
-using CloudHosting.Core.Interfaces;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Text;
-using CloudHosting.Core.Entities;
 
-namespace CloudHosting.Infrastructure.Services 
+namespace CloudHosting.Infrastructure.Services
 {
-    public class DockerService : IDockerService, IDisposable
+    public class DockerService : Core.Interfaces.IDockerService, IDisposable
     {
         private readonly DockerClient _client;
         private readonly ILogger<DockerService> _logger;
@@ -25,6 +24,7 @@ namespace CloudHosting.Infrastructure.Services
 
         public async Task<string> BuildImageAsync(string buildContextDir, string imageName)
         {
+            
             ArgumentNullException.ThrowIfNull(buildContextDir);
             ArgumentNullException.ThrowIfNull(imageName);
 
@@ -158,28 +158,52 @@ namespace CloudHosting.Infrastructure.Services
                 _logger.LogInformation("Retrieving Docker resource information");
                 
                 var info = await _client.System.GetSystemInfoAsync();
+                var resourceInfo = new Model.ResourceInfo();
                 
-                // detailed resource information
+                // Get running containers
                 var containers = await _client.Containers.ListContainersAsync(new ContainersListParameters
                 {
-                    All = false, // only running containers
+                    All = false
                 });
-                
-                // CPU and memory usage
+
+                double totalMemoryUsed = 0;
                 double totalCpuPercent = 0;
-                long totalMemoryUsage = 0;
-                
+
                 foreach (var container in containers)
                 {
-                    try 
+                    try
                     {
-
-                        var statsStream = await _client.Containers.GetContainerStatsAsync(container.ID, new ContainerStatsParameters{},CancellationToken.None);
-                        
-                        using (var reader = new StreamReader(statsStream))
+                        var statsCompletion = new TaskCompletionSource<ContainerStatsResponse>();
+                        var progress = new Progress<ContainerStatsResponse>(stats => 
                         {
-                            var statsJson = await reader.ReadToEndAsync();
-                            totalMemoryUsage += 100 * 1024 * 1024; // Placeholder
+                            statsCompletion.TrySetResult(stats);
+                        });
+
+                        // Get single stats update
+                        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                        await _client.Containers.GetContainerStatsAsync(
+                            container.ID, 
+                            new ContainerStatsParameters { Stream = false }, 
+                            progress, 
+                            cts.Token
+                        );
+
+                        var stats = await statsCompletion.Task;
+                        
+                        if (stats != null)
+                        {
+                            // memory usage
+                            totalMemoryUsed += stats.MemoryStats.Usage;
+
+                            // CPU usage
+                            var cpuDelta = stats.CPUStats.CPUUsage.TotalUsage;
+                            var systemDelta = stats.CPUStats.SystemUsage;
+                            
+                            if (systemDelta > 0)
+                            {
+                                var cpuPercent = cpuDelta / (double)systemDelta * 100.0;
+                                totalCpuPercent += cpuPercent;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -187,15 +211,13 @@ namespace CloudHosting.Infrastructure.Services
                         _logger.LogWarning(ex, "Could not get stats for container {ContainerId}", container.ID);
                     }
                 }
-                
-                var resourceInfo = new Model.ResourceInfo
-                {
-                    AvailableRam = $"{info.MemTotal / (1024 * 1024 * 1024)}GB",
-                    InUseRam = $"{totalMemoryUsage / (1024 * 1024)}MB", 
-                    CpuUtilization = $"{info.NCPU} cores",
-                    StorageUsed = await GetStorageUsedAlternativeAsync()
-                };
-                
+
+                // resource info
+                resourceInfo.InUseRam = $"{totalMemoryUsed / (1024 * 1024)}MB";
+                resourceInfo.AvailableRam = $"{info.MemTotal / (1024 * 1024)}MB";
+                resourceInfo.CpuUtilization = $"{Math.Round(totalCpuPercent, 2)}%";
+                resourceInfo.StorageUsed = await GetStorageUsageAsync();
+
                 _logger.LogInformation("Retrieved resource info: RAM={AvailableRam}, CPU={CpuUtilization}, Storage={StorageUsed}", 
                     resourceInfo.AvailableRam, resourceInfo.CpuUtilization, resourceInfo.StorageUsed);
                     
@@ -208,22 +230,17 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        private async Task<string> GetStorageUsedAlternativeAsync()
+        private async Task<string> GetStorageUsageAsync()
         {
             try
             {
-                var images = await _client.Images.ListImagesAsync(new ImagesListParameters { All = true });
-                long totalSize = 0;
-                foreach (var image in images)
-                {
-                    totalSize += image.Size;
-                }
-                return $"{(double)totalSize / (1024 * 1024 * 1024):F2}GB";
+                var images = await _client.Images.ListImagesAsync(new ImagesListParameters());
+                var totalSize = images.Sum(i => i.Size);
+                return $"{Math.Round(totalSize / (1024.0 * 1024.0 * 1024.0), 2)}GB";
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogWarning(ex, "Could not get Docker storage information");
-                return "N/A";
+                return "Unknown";
             }
         }
 

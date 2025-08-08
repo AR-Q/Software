@@ -1,36 +1,14 @@
 using CloudHosting.Core.Interfaces;
+using CloudHosting.Infrastructure.Data;
 using CloudHosting.Infrastructure.Middleware;
 using CloudHosting.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // JWT Authentication
 var configuration = builder.Configuration;
-var jwtKey = configuration["Jwt:Key"] ?? 
-    throw new InvalidOperationException("JWT key is not configured. Please check your configuration.");
-var key = Encoding.ASCII.GetBytes(jwtKey);
-
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidIssuer = configuration["Jwt:Issuer"] ?? "CloudHosting",
-        ValidAudience = configuration["Jwt:Audience"] ?? "CloudHostingUsers"
-    };
-});
 
 // Docker health check
 builder.Services.AddHealthChecks()
@@ -53,59 +31,31 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "CloudHosting API", Version = "v1" });
-    
-    // JWT Authentication to Swagger
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    });
 });
 
 // services
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IFileService, FileService>();
+builder.Services.AddScoped<IPaymentService, ZarinPalService>();
 builder.Services.AddSingleton<IDockerService, DockerService>();
 builder.Services.AddSingleton<ICloudPlanService, CloudPlanService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddControllers();var app = builder.Build();
+builder.Services.AddControllers();
+builder.Services.AddDbContext<CloudHostingDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IFileStorageService, SqlFileStorageService>();
+var app = builder.Build();
 
 // error handling
 app.UseMiddleware<ErrorHandlingMiddleware>();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
     
-    // Swagger UI
-    app.UseSwagger();
-    app.UseSwaggerUI(c => {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CloudHosting API v1");
-    });
-}
+// swagger
+app.UseSwagger();
+app.UseSwaggerUI(c => {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CloudHosting API v2");
+});
 
 // health checks endpoint
 app.MapHealthChecks("/health");
-
-// authentication middleware
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();

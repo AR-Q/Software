@@ -1,10 +1,9 @@
-using CloudHosting.Core.Entities;
+using CloudHosting.Infrastructure.Model;
 
 namespace CloudHosting.Core.Interfaces
 {
     public interface ICloudPlanService
     {
-        Task<IEnumerable<CloudPlan>> GetActivePlansAsync(int userId);
-        Task<CloudPlan> GetActivePlanAsync(string userId, int planId); // New method
+        Task<List<CloudPlan>> GetActivePlansAsync(int userId);
     }
 }

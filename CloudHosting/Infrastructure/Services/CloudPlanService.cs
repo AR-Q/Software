@@ -3,13 +3,13 @@ using CloudHosting.Infrastructure.Model;
 
 namespace CloudHosting.Infrastructure.Services
 {
-    public class CloudPlanService
+    public class CloudPlanService : ICloudPlanService
     {
         private readonly ILogger<CloudPlanService> _logger;
         private readonly List<CloudPlan> _cloudPlans = new List<CloudPlan>
         {
-            new CloudPlan { Id = 1, Name = "Basic", ExpiryDate = DateTime.UtcNow.AddMonths(1), MaxCpuCores = 2, MaxMemoryMB = 2048 },
-            new CloudPlan { Id = 2, Name = "Pro", ExpiryDate = DateTime.UtcNow.AddMonths(2), MaxCpuCores = 4, MaxMemoryMB = 4096 }
+            new() { Id = 1, Name = "Basic", ExpiryDate = DateTime.UtcNow.AddMonths(1), MaxCpuCores = 2, MaxMemoryMB = 2048 },
+            new() { Id = 2, Name = "Pro", ExpiryDate = DateTime.UtcNow.AddMonths(2), MaxCpuCores = 4, MaxMemoryMB = 4096 }
         };
 
         public CloudPlanService(ILogger<CloudPlanService> logger)

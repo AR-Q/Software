@@ -1,31 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
 using CloudHosting.Infrastructure.Model;
 using CloudHosting.Core.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CloudHosting.Presentation.Controller
 {
-    [Authorize]
+    [VerifyUser]
     [ApiController]
     [Route("api/[controller]")]
     public class DockerController : ControllerBase
     {
         private readonly IDockerService _dockerService;
         private readonly ICloudPlanService _cloudPlanService;
+        private readonly IFileService _fileService; // Add IFileService
 
-        public DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService)
+        public DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService, IFileService fileService)
         {
             _dockerService = dockerService;
             _cloudPlanService = cloudPlanService;
+            _fileService = fileService; // Initialize IFileService
         }
 
         [HttpPost("build")]
-        public async Task<IActionResult> BuildImage([FromBody] BuildImageRequest request)
+        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName)
         {
             try
             {
-                var imageId = await _dockerService.BuildImageAsync(request.BuildContextDir, request.ImageName);
-                return Ok(new { ImageId = imageId });
+                if (file == null || file.Length == 0)
+                    return BadRequest("No file uploaded");
+
+                if (!file.ContentType.Equals("application/zip"))
+                    return BadRequest("Only zip files are allowed");
+
+                // Get user ID from token
+                var userId = int.Parse(User.FindFirst("userId").Value);
+                
+                var buildPath = await _fileService.SaveAndExtractZipAsync(file, userId);
+
+                try
+                {
+                    var imageId = await _dockerService.BuildImageAsync(buildPath, imageName);
+                    return Ok(new { ImageId = imageId });
+                }
+                finally
+                {
+                    // Cleanup build context after build
+                    _fileService.CleanupBuildContext(buildPath);
+                }
             }
             catch (Exception ex)
             {
