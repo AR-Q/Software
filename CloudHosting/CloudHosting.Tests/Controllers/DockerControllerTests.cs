@@ -46,7 +46,7 @@ namespace WebApplication4.Tests.Controllers
             string imageName = "test-image";
 
             // Act
-            var result = await _controller.BuildImage(file, imageName);
+            var result = await _controller.BuildImage(file, imageName, "a");
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
@@ -61,7 +61,7 @@ namespace WebApplication4.Tests.Controllers
             mockFile.Setup(f => f.Length).Returns(1024);
 
             // Act
-            var result = await _controller.BuildImage(mockFile.Object, "test-image");
+            var result = await _controller.BuildImage(mockFile.Object, "test-image", "a");
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);

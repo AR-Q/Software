@@ -21,7 +21,7 @@ namespace CloudHosting.Presentation.Controller
         }
 
         [HttpPost("build")]
-        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName)
+        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName, [FromForm] string userId)
         {
             try
             {
@@ -30,11 +30,8 @@ namespace CloudHosting.Presentation.Controller
 
                 if (!file.ContentType.Equals("application/zip"))
                     return BadRequest("Only zip files are allowed");
-
-                // Get user ID from token
-                var userId = int.Parse(User.FindFirst("userId").Value);
                 
-                var buildPath = await _fileService.SaveAndExtractZipAsync(file, userId);
+                var buildPath = await _fileService.SaveAndExtractZipAsync(file, imageName, userId);
 
                 try
                 {

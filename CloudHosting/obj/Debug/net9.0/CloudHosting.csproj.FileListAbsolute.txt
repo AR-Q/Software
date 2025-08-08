@@ -556,3 +556,4 @@ C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net9.0\refint\CloudHosti
 C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net9.0\CloudHosting.pdb
 C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net9.0\CloudHosting.genruntimeconfig.cache
 C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net9.0\ref\CloudHosting.dll
+C:\Custom\Softwares\Git\Software\CloudHosting\bin\Debug\net9.0\CloudHosting.staticwebassets.runtime.json

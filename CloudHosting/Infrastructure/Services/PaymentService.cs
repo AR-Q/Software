@@ -1,6 +1,6 @@
 using CloudHosting.Core.Interfaces;
 using CloudHosting.Infrastructure.Model;
-using System.Security.Cryptography;
+using System.Net.Http.Json;
 
 namespace CloudHosting.Infrastructure.Services
 {
@@ -8,22 +8,23 @@ namespace CloudHosting.Infrastructure.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
-        private readonly string _merchantId = "N/A";
+        private readonly string _merchantId;
+        private const int SUCCESS_STATUS = 100;
+        private const string SANDBOX_URL = "https://sandbox.zarinpal.com/";
+        private const string SANDBOX_START_PAY = "https://sandbox.zarinpal.com/pg/StartPay/";
 
         public ZarinPalService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            if(configuration["ZarinPal:MerchantId"]!=null)
-            _merchantId = configuration["ZarinPal:MerchantId"];
-
-            // Set base address for sandbox
-            _httpClient.BaseAddress = new Uri("https://sandbox.zarinpal.com/");
+            _merchantId = configuration["ZarinPal:MerchantId"] ?? throw new InvalidOperationException("ZarinPal:MerchantId not configured");
+            _httpClient.BaseAddress = new Uri(SANDBOX_URL);
         }
-
 
         public async Task<PaymentResponse> RequestPayment(PaymentRequest request)
         {
+            ValidateRequest(request);
+
             var zarinRequest = new
             {
                 merchant_id = _merchantId,
@@ -33,14 +34,36 @@ namespace CloudHosting.Infrastructure.Services
                 metadata = new { user_id = request.UserId, plan_id = request.PlanId }
             };
 
-            var response = await _httpClient.PostAsJsonAsync("pg/v4/payment/request.json", zarinRequest);
-            var result = await response.Content.ReadFromJsonAsync<PaymentResponse>();
-            
-            return result;
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("pg/v4/payment/request.json", zarinRequest);
+                response.EnsureSuccessStatusCode();
+                
+                var result = await response.Content.ReadFromJsonAsync<ZarinpalResponse>();
+                if (result == null)
+                    throw new PaymentException("Invalid response from payment gateway");
+
+                return new PaymentResponse 
+                { 
+                    Status = result.data.code,
+                    Authority = result.data.authority,
+                    PaymentUrl = result.data.code == SUCCESS_STATUS ? $"{SANDBOX_START_PAY}{result.data.authority}" : null
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new PaymentException("Failed to initiate payment", ex);
+            }
         }
 
         public async Task<PaymentVerification> VerifyPayment(string authority, int amount)
         {
+            if (string.IsNullOrEmpty(authority))
+                throw new ArgumentNullException(nameof(authority));
+
+            if (amount <= 0)
+                throw new ArgumentException("Amount must be greater than 0", nameof(amount));
+
             var verifyRequest = new
             {
                 merchant_id = _merchantId,
@@ -48,10 +71,41 @@ namespace CloudHosting.Infrastructure.Services
                 authority = authority
             };
 
-            var response = await _httpClient.PostAsJsonAsync("pg/v4/payment/verify.json", verifyRequest);
-            var result = await response.Content.ReadFromJsonAsync<PaymentVerification>();
-            
-            return result;
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("pg/v4/payment/verify.json", verifyRequest);
+                response.EnsureSuccessStatusCode();
+                
+                var result = await response.Content.ReadFromJsonAsync<ZarinpalVerifyResponse>();
+                if (result == null)
+                    throw new PaymentException("Invalid verification response");
+
+                return new PaymentVerification
+                {
+                    Status = result.data.code,
+                    Authority = authority,
+                    Amount = amount,
+                    RefId = result.data.ref_id,
+                    CardPan = result.data.card_pan,
+                    CardHash = result.data.card_hash
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new PaymentException("Payment verification failed", ex);
+            }
+        }
+
+        private void ValidateRequest(PaymentRequest request)
+        {
+            if (request.Amount <= 0)
+                throw new ArgumentException("Amount must be greater than 0", nameof(request.Amount));
+
+            if (string.IsNullOrEmpty(request.Description))
+                throw new ArgumentException("Description is required", nameof(request.Description));
+
+            if (string.IsNullOrEmpty(request.CallbackUrl))
+                throw new ArgumentException("CallbackUrl is required", nameof(request.CallbackUrl));
         }
     }
 }

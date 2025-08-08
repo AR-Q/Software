@@ -56,7 +56,12 @@ namespace WebApplication4.Tests.Controllers
                 PlanId = 1
             };
 
-            var response = new PaymentResponse { Status = 100, Authority = "test-authority" };
+            var response = new PaymentResponse 
+            { 
+                Status = 100, 
+                Authority = "test-authority",
+                PaymentUrl = "https://sandbox.zarinpal.com/pg/StartPay/test-authority"
+            };
 
             _mockPaymentService.Setup(x => x.RequestPayment(request))
                 .ReturnsAsync(response);
@@ -67,15 +72,15 @@ namespace WebApplication4.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             dynamic returnValue = okResult.Value;
-            Assert.Contains("sandbox.zarinpal.com", (string)returnValue.PaymentUrl);
-            Assert.Equal("test-authority", (string)returnValue.Authority);
+            Assert.Equal(response.PaymentUrl, (string)returnValue.PaymentUrl);
+            Assert.Equal(response.Authority, (string)returnValue.Authority);
         }
 
         [Fact]
         public async Task InitiateCheckout_ReturnsBadRequest_WhenPaymentFails()
         {
             // Arrange
-            var request = new PaymentRequest 
+            var request = new PaymentRequest
             { 
                 Amount = 1000,
                 Description = "Test payment",

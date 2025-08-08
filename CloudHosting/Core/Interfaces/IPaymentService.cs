@@ -1,5 +1,4 @@
 using CloudHosting.Infrastructure.Model;
-
 namespace CloudHosting.Core.Interfaces 
 {
     public interface IPaymentService
