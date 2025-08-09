@@ -21,7 +21,7 @@ namespace CloudHosting.Presentation.Controller
         }
 
         [HttpPost("build")]
-        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName, [FromForm] string userId)
+        public async Task<IActionResult> BuildImage( IFormFile file, [FromForm] string imageName, [FromForm] string userId)
         {
             try
             {
