@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CloudHosting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b3c80bddc1d2badabce75b7a2350ec196fdd4a7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3af0ac54dba1040e5116edbc213c2f7bb714b025")]
 [assembly: System.Reflection.AssemblyProductAttribute("CloudHosting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CloudHosting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
