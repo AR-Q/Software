@@ -1,0 +1,6 @@
+{
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
+    ],
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
+}
