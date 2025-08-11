@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5038"
+      "applicationUrl": "http://localhost:5113"
     },
     "https": {
       "commandName": "Project",
@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:5039"
+      "applicationUrl": "https://localhost:7180"
     },
     "Container (.NET SDK)": {
       "commandName": "SdkContainer",

@@ -1,9 +1,6 @@
 using CloudHosting.Core.Interfaces;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Identity.Client;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CloudHosting.Infrastructure.Services
 {

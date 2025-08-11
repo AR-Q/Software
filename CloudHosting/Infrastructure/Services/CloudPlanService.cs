@@ -9,7 +9,8 @@ namespace CloudHosting.Infrastructure.Services
     {
         private readonly ILogger<CloudPlanService> _logger;
         private const string BASE_PATH = @"C:\CloudHost\Plans";
-        
+        private readonly IIamService _iamService;
+
         // Available plans for purchase
         private readonly List<Plan> _availablePlans = new List<Plan>
         {
@@ -17,9 +18,10 @@ namespace CloudHosting.Infrastructure.Services
             new() { Id = 2, Name = "Pro", Description = "Professional cloud hosting plan", Price = 59.99M, MaxCpuCores = 4, MaxMemoryMB = 4096, MaxStorageGB = 20, IsActive = true }
         };
 
-        public CloudPlanService(ILogger<CloudPlanService> logger)
+        public CloudPlanService(ILogger<CloudPlanService> logger, IIamService iamService)
         {
             _logger = logger;
+            _iamService = iamService;
         }
 
         public async Task<List<Plan>> GetAvailablePlansAsync()
@@ -27,14 +29,19 @@ namespace CloudHosting.Infrastructure.Services
             return await Task.FromResult(_availablePlans.Where(p => p.IsActive).ToList());
         }
 
-        public async Task<List<Model.CloudPlan>> GetActivePlansAsync(int userId)
+        public async Task<List<Model.CloudPlan>> GetActivePlansAsync(string userId)
         {
+
+            if (string.IsNullOrEmpty((string)userId))
+            {
+                throw new UnauthorizedAccessException("Invalid userId");
+            }
             try
             {
                 var userPlanPath = Path.Combine(BASE_PATH, userId.ToString());
                 if (!Directory.Exists(userPlanPath))
                 {
-                    _logger.LogInformation("No plans found for user: {UserId}", userId);
+                    _logger.LogInformation("No plans found for user: {UserId}", (object)userId);
                     return new List<Model.CloudPlan>();
                 }
 
@@ -52,18 +59,24 @@ namespace CloudHosting.Infrastructure.Services
                     }
                 }
 
-                _logger.LogInformation("Found {Count} active plans for user {UserId}", activePlans.Count, userId);
+                _logger.LogInformation("Found {Count} active plans for user {UserId}", activePlans.Count, (object)userId);
                 return activePlans;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to get active plans for user {UserId}", userId);
+                _logger.LogError(ex, "Failed to get active plans for user {UserId}", (object)userId);
                 throw;
             }
         }
 
-        public async Task AddUserPlanAsync(int userId, int planId, string transactionId)
+        public async Task AddUserPlanAsync(string userId, int planId, string transactionId)
         {
+
+            if (string.IsNullOrEmpty((string)userId))
+            {
+                throw new UnauthorizedAccessException("Invalid userId");
+            }
+
             try
             {
                 var plan = _availablePlans.FirstOrDefault(p => p.Id == planId);
@@ -87,11 +100,11 @@ namespace CloudHosting.Infrastructure.Services
                 var planFile = Path.Combine(userPlanPath, $"{transactionId}.json");
                 await File.WriteAllTextAsync(planFile, JsonSerializer.Serialize(cloudPlan));
 
-                _logger.LogInformation("Added new plan for user {UserId}: {PlanName}", userId, plan.Name);
+                _logger.LogInformation("Added new plan for user {UserId}: {PlanName}", (object)userId, plan.Name);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to add plan for user {UserId}", userId);
+                _logger.LogError(ex, "Failed to add plan for user {UserId}", (object)userId);
                 throw;
             }
         }

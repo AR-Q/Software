@@ -2,8 +2,8 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Custom\Softwares\Git\Software\CloudHosting\bin\Release\net9.0\publish\</_PublishTargetUrl>
-    <History>True|2025-08-11T08:25:17.8032985Z||;True|2025-08-08T18:33:49.5796346+03:30||;True|2025-08-08T14:50:42.8214678+03:30||;True|2025-08-08T14:47:43.6816483+03:30||;True|2025-08-08T14:41:25.5143494+03:30||;</History>
+    <_PublishTargetUrl>C:\Users\arjma\Documents\Project\CloudHosting\bin\Release\net9.0\publish\</_PublishTargetUrl>
+    <History>True|2025-08-11T11:43:35.8372652Z||;True|2025-08-11T15:08:30.0958224+03:30||;True|2025-08-11T14:16:47.7404489+03:30||;True|2025-08-11T14:12:56.9716712+03:30||;True|2025-08-11T14:05:38.9807769+03:30||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

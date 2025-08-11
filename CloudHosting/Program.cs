@@ -11,15 +11,17 @@ var configuration = builder.Configuration;
 // Docker health check
 builder.Services.AddHealthChecks()
     .AddCheck("DockerEngine", () => {
-        try {
+        try
+        {
             var dockerClient = new Docker.DotNet.DockerClientConfiguration(
                 new Uri(configuration["Docker:ConnectionString"] ?? "npipe://./pipe/docker_engine"))
                 .CreateClient();
-            
+
             // connection successful
             return Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy();
-        } 
-        catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Unhealthy("Docker Engine not available", ex);
         }
     });
@@ -28,8 +30,9 @@ builder.Services.AddHealthChecks()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { 
-        Title = "CloudHosting API", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "CloudHosting API v1",
         Version = "v1",
         Description = "API for managing cloud containers and payments"
     });
@@ -41,12 +44,13 @@ builder.Services.AddSingleton<IFileService, FileService>();
 builder.Services.AddScoped<IPaymentService, ZarinPalService>();
 builder.Services.AddSingleton<IDockerService, DockerService>();
 builder.Services.AddSingleton<ICloudPlanService, CloudPlanService>();
+builder.Services.AddSingleton<IIamService, IamService>();
 builder.Services.AddControllers();
 var app = builder.Build();
 
 // error handling
 app.UseMiddleware<ErrorHandlingMiddleware>();
-    
+
 // swagger
 app.UseSwagger();
 app.UseSwaggerUI(c => {

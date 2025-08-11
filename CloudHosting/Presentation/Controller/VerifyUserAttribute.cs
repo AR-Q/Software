@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text;
 using System.Text.Json;

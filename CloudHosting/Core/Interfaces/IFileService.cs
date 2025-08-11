@@ -4,7 +4,7 @@ namespace CloudHosting.Core.Interfaces
     {
         Task<string> SaveAndExtractZipAsync(IFormFile file, string imageName, string userId);
         void CleanupBuildContext(string buildPath);
-        Task<IEnumerable<string>> GetUserDirectoriesAsync(string token);
-        Task<IEnumerable<string?>> GetUserDockerImagesAsync(string token);
+        Task<IEnumerable<string>> GetUserDirectoriesAsync(string userId);
+        Task<IEnumerable<string?>> GetUserDockerImagesAsync(string userId);
     }
 }

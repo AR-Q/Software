@@ -1,25 +1,29 @@
+using CloudHosting.Core.Interfaces;
 using CloudHosting.Infrastructure.Model;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using ICSharpCode.SharpZipLib.Tar;
+using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace CloudHosting.Infrastructure.Services
 {
-    public class DockerService : Core.Interfaces.IDockerService, IDisposable
+    public class DockerService : IDockerService, IDisposable
     {
         private readonly DockerClient _client;
         private readonly ILogger<DockerService> _logger;
         private bool _disposed;
+        private readonly IIamService _iamService;
 
-        public DockerService(IConfiguration configuration, ILogger<DockerService> logger)
+        public DockerService(IConfiguration configuration, ILogger<DockerService> logger, IIamService iamService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            
+
             var dockerConnection = configuration["Docker:ConnectionString"] ?? "npipe://./pipe/docker_engine";
             _logger.LogInformation("Initializing Docker service with connection: {Connection}", dockerConnection);
-            
+
             _client = new DockerClientConfiguration(new Uri(dockerConnection)).CreateClient();
+            _iamService = iamService;
         }
 
         public async Task<string> BuildImageAsync(string buildContextDir, string imageName)
@@ -92,6 +96,53 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
+        public async Task<string> RunContainerAsync(string imageName, string containerName, CloudPlan plan, string userId)
+        {
+            ArgumentNullException.ThrowIfNull(imageName);
+            ArgumentNullException.ThrowIfNull(containerName);
+            ArgumentNullException.ThrowIfNull(plan);
+            ArgumentNullException.ThrowIfNull(userId);
+
+            try
+            {
+                _logger.LogInformation("Creating container {ContainerName} from image {ImageName} with plan {PlanName} for user {UserId}", 
+                    containerName, imageName, plan.Name, (object)userId);
+                
+                var createResponse = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
+                {
+                    Image = imageName,
+                    Name = containerName,
+                    Labels = new Dictionary<string, string>
+                    {
+                        ["user.id"] = userId
+                    },
+                    HostConfig = new HostConfig
+                    {
+                        Memory = plan.MaxMemoryMB * 1024L * 1024L,
+                        CpusetCpus = $"0-{plan.MaxCpuCores - 1}",
+                        RestartPolicy = new RestartPolicy 
+                        { 
+                            Name = RestartPolicyKind.OnFailure, 
+                            MaximumRetryCount = 3 
+                        },
+                        AutoRemove = true
+                    },
+                    Env = new[] { $"MAX_MEMORY={plan.MaxMemoryMB}MB", $"CPU_CORES={plan.MaxCpuCores}" }
+                });
+
+                _logger.LogInformation("Starting container {ContainerId}", createResponse.ID);
+                await _client.Containers.StartContainerAsync(createResponse.ID, new ContainerStartParameters());
+                
+                _logger.LogInformation("Container {ContainerId} started successfully", createResponse.ID);
+                return createResponse.ID;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to run container {ContainerName} from image {ImageName} for user {UserId}", containerName, imageName, (object)userId);
+                throw new DockerOperationException($"Failed to run container: {ex.Message}", ex);
+            }
+        }
+
         public async Task<bool> StopContainerAsync(string containerId)
         {
             ArgumentNullException.ThrowIfNull(containerId);
@@ -151,19 +202,32 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        public async Task<ResourceInfo> GetResourceInfoAsync()
+        public async Task<ResourceInfo> GetResourceInfoAsync(string userId)
         {
+
+            if (string.IsNullOrEmpty((string)userId))
+            {
+                throw new UnauthorizedAccessException("Invalid token");
+            }
+
             try
             {
-                _logger.LogInformation("Retrieving Docker resource information");
+                _logger.LogInformation("Retrieving Docker resource information for user {UserId}", (object)userId);
                 
                 var info = await _client.System.GetSystemInfoAsync();
                 var resourceInfo = new ResourceInfo();
                 
-                // Get running containers
+                // Get running containers with label filter for user
                 var containers = await _client.Containers.ListContainersAsync(new ContainersListParameters
                 {
-                    All = false
+                    All = false,
+                    Filters = new Dictionary<string, IDictionary<string, bool>>
+                    {
+                        ["label"] = new Dictionary<string, bool>
+                        {
+                            [$"user.id={userId}"] = true
+                        }
+                    }
                 });
 
                 double totalMemoryUsed = 0;
@@ -179,7 +243,6 @@ namespace CloudHosting.Infrastructure.Services
                             statsCompletion.TrySetResult(stats);
                         });
 
-                        // Get single stats update
                         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
                         await _client.Containers.GetContainerStatsAsync(
                             container.ID, 
@@ -192,10 +255,8 @@ namespace CloudHosting.Infrastructure.Services
                         
                         if (stats != null)
                         {
-                            // memory usage
                             totalMemoryUsed += stats.MemoryStats.Usage;
 
-                            // CPU usage
                             var cpuDelta = stats.CPUStats.CPUUsage.TotalUsage;
                             var systemDelta = stats.CPUStats.SystemUsage;
                             
@@ -212,29 +273,37 @@ namespace CloudHosting.Infrastructure.Services
                     }
                 }
 
-                // resource info
                 resourceInfo.InUseRam = $"{totalMemoryUsed / (1024 * 1024)}MB";
-                resourceInfo.AvailableRam = $"{info.MemTotal / (1024 * 1024)}MB";
+                resourceInfo.AvailableRam = $"{info.MemTotal / (1024 * 1024)}MB"; 
                 resourceInfo.CpuUtilization = $"{Math.Round(totalCpuPercent, 2)}%";
-                resourceInfo.StorageUsed = await GetStorageUsageAsync();
+                resourceInfo.StorageUsed = await GetStorageUsageAsync(userId);
 
-                _logger.LogInformation("Retrieved resource info: RAM={AvailableRam}, CPU={CpuUtilization}, Storage={StorageUsed}", 
-                    resourceInfo.AvailableRam, resourceInfo.CpuUtilization, resourceInfo.StorageUsed);
+                _logger.LogInformation("Retrieved resource info for user {UserId}: RAM={AvailableRam}, CPU={CpuUtilization}, Storage={StorageUsed}",
+                    (object)userId, resourceInfo.AvailableRam, resourceInfo.CpuUtilization, resourceInfo.StorageUsed);
                     
                 return resourceInfo;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to get Docker resource information");
+                _logger.LogError(ex, "Failed to get Docker resource information for user {UserId}", (object)userId);
                 throw new DockerOperationException($"Failed to get resource info: {ex.Message}", ex);
             }
         }
 
-        private async Task<string> GetStorageUsageAsync()
+        private async Task<string> GetStorageUsageAsync(string userId)
         {
             try
             {
-                var images = await _client.Images.ListImagesAsync(new ImagesListParameters());
+                var images = await _client.Images.ListImagesAsync(new ImagesListParameters
+                {
+                    Filters = new Dictionary<string, IDictionary<string, bool>>
+                    {
+                        ["label"] = new Dictionary<string, bool>
+                        {
+                            [$"user.id={userId}"] = true
+                        }
+                    }
+                });
                 var totalSize = images.Sum(i => i.Size);
                 return $"{Math.Round(totalSize / (1024.0 * 1024.0 * 1024.0), 2)}GB";
             }

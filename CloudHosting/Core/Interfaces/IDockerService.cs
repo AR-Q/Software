@@ -8,6 +8,6 @@ namespace CloudHosting.Core.Interfaces
         Task<string> BuildImageAsync(string buildContextDir, string imageName);
         Task<bool> StopContainerAsync(string containerId);
         Task<string> GetContainerLogsAsync(string containerId);
-        Task<ResourceInfo> GetResourceInfoAsync();
+        Task<ResourceInfo> GetResourceInfoAsync(string userId);
     }
 }

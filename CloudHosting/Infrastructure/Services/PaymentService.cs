@@ -7,7 +7,6 @@ namespace CloudHosting.Infrastructure.Services
     public class ZarinPalService : IPaymentService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
         private readonly string _merchantId;
         private const int SUCCESS_STATUS = 100;
         private const string SANDBOX_URL = "https://sandbox.zarinpal.com/";
@@ -16,7 +15,6 @@ namespace CloudHosting.Infrastructure.Services
         public ZarinPalService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
             _merchantId = configuration["ZarinPal:MerchantId"] ?? throw new InvalidOperationException("ZarinPal:MerchantId not configured");
             _httpClient.BaseAddress = new Uri(SANDBOX_URL);
         }

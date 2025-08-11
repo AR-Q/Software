@@ -5,7 +5,7 @@ namespace CloudHosting.Core.Interfaces
     public interface ICloudPlanService
     {
         Task<List<Plan>> GetAvailablePlansAsync();
-        Task<List<Infrastructure.Model.CloudPlan>> GetActivePlansAsync(int userId);
-        Task AddUserPlanAsync(int userId, int planId, string transactionId);
+        Task<List<Infrastructure.Model.CloudPlan>> GetActivePlansAsync(string userId);
+        Task AddUserPlanAsync(string userId, int planId, string transactionId);
     }
 }

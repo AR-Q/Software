@@ -1,20 +1,40 @@
-using Microsoft.AspNetCore.Mvc;
-using CloudHosting.Infrastructure.Model;
+using CloudHosting.Core.Entities;
 using CloudHosting.Core.Interfaces;
+using CloudHosting.Infrastructure.Model;
+using CloudHosting.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CloudHosting.Presentation.Controller
 {
-    [VerifyUser]
     [ApiController]
     [Route("api/[controller]")]
-    public class DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService, IFileService fileService) : ControllerBase
+    [VerifyUser]
+    public class DockerController: ControllerBase
     {
-        private readonly IDockerService _dockerService = dockerService;
-        private readonly ICloudPlanService _cloudPlanService = cloudPlanService;
-        private readonly IFileService _fileService = fileService;
+        private readonly IDockerService _dockerService;
+        private readonly ICloudPlanService _cloudPlanService;
+        private readonly IFileService _fileService;
+        private readonly IIamService _iamService;
+
+        public DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService, IFileService fileService, IIamService iamService)
+        {
+            _dockerService = dockerService;
+            _cloudPlanService = cloudPlanService;
+            _fileService = fileService;
+            _iamService = iamService;
+        }
+
+        private string GetTokenFromHeader()
+        {
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                throw new UnauthorizedAccessException("Invalid authorization header");
+
+            return authHeader.Substring("Bearer ".Length).Trim();
+        }
 
         [HttpPost("build")]
-        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName, [FromForm] string userId)
+        public async Task<IActionResult> BuildImage(IFormFile file, [FromForm] string imageName)
         {
             try
             {
@@ -23,7 +43,9 @@ namespace CloudHosting.Presentation.Controller
 
                 if (!file.ContentType.Equals("application/zip"))
                     return BadRequest("Only zip files are allowed");
-                
+
+                var userId = await _iamService.GetUserIdFromTokenAsync(GetTokenFromHeader());
+
                 var buildPath = await _fileService.SaveAndExtractZipAsync(file, imageName, userId);
 
                 try
@@ -37,17 +59,22 @@ namespace CloudHosting.Presentation.Controller
                     _fileService.CleanupBuildContext(buildPath);
                 }
             }
+            catch (UnauthorizedException ex)
+            {
+                return Unauthorized(new { Error = ex.Message });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { Error = ex.Message });
             }
         }
 
-        [HttpPost("run/{userId}")]
-        public async Task<IActionResult> RunContainer(int userId, [FromBody] RunContainerRequest request)
+        [HttpPost("run")]
+        public async Task<IActionResult> RunContainer([FromBody] RunContainerRequest request)
         {
             try
             {
+                var userId = await _iamService.GetUserIdFromTokenAsync(GetTokenFromHeader());
                 var plans = await _cloudPlanService.GetActivePlansAsync(userId);
                 var plan = plans.FirstOrDefault(p => p.Id == request.PlanId);
                 
@@ -95,12 +122,15 @@ namespace CloudHosting.Presentation.Controller
             }
         }
 
-        [HttpGet("resources")]
+        [HttpPost("resources")]
         public async Task<IActionResult> GetResourceInfo()
         {
             try
             {
-                var info = await _dockerService.GetResourceInfoAsync();
+
+                var userId = await _iamService.GetUserIdFromTokenAsync(GetTokenFromHeader());
+
+                var info = await _dockerService.GetResourceInfoAsync(userId);
                 return Ok(info);
             }
             catch (Exception ex)
@@ -109,12 +139,14 @@ namespace CloudHosting.Presentation.Controller
             }
         }
 
-        [HttpGet("list")]
-        public async Task<IActionResult> ListImages([FromHeader] string token)
+        [HttpPost("list")]
+        public async Task<IActionResult> ListImages()
         {
             try
             {
-                var images = await _fileService.GetUserDockerImagesAsync(token);
+
+                var userId = await _iamService.GetUserIdFromTokenAsync(GetTokenFromHeader());
+                var images = await _fileService.GetUserDockerImagesAsync(userId);
                 return Ok(new { Images = images });
             }
             catch (Exception ex)
@@ -122,5 +154,10 @@ namespace CloudHosting.Presentation.Controller
                 return BadRequest(new { Error = ex.Message });
             }
         }
+    }
+
+    public class UnauthorizedException : Exception
+    {
+        public UnauthorizedException(string message) : base(message) { }
     }
 }

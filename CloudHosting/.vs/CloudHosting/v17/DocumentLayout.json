@@ -1,24 +1,7 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|c:\\custom\\softwares\\git\\software\\cloudhosting\\presentation\\controller\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|solutionrelative:presentation\\controller\\paymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|c:\\custom\\softwares\\git\\software\\cloudhosting\\presentation\\controller\\verifyuserattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|solutionrelative:presentation\\controller\\verifyuserattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|c:\\custom\\softwares\\git\\software\\cloudhosting\\presentation\\controller\\dockercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|solutionrelative:presentation\\controller\\dockercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|c:\\custom\\softwares\\git\\software\\cloudhosting\\infrastructure\\services\\dockerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4405E5C9-562A-471D-96D5-7D49D83BCE77}|CloudHosting.csproj|solutionrelative:infrastructure\\services\\dockerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "C:\\Users\\arjma\\Documents\\Project\\CloudHosting\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -26,60 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PaymentController.cs",
-              "DocumentMoniker": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\PaymentController.cs",
-              "RelativeDocumentMoniker": "Presentation\\Controller\\PaymentController.cs",
-              "ToolTip": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\PaymentController.cs",
-              "RelativeToolTip": "Presentation\\Controller\\PaymentController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T08:30:31.655Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VerifyUserAttribute.cs",
-              "DocumentMoniker": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\VerifyUserAttribute.cs",
-              "RelativeDocumentMoniker": "Presentation\\Controller\\VerifyUserAttribute.cs",
-              "ToolTip": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\VerifyUserAttribute.cs",
-              "RelativeToolTip": "Presentation\\Controller\\VerifyUserAttribute.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T08:30:32.465Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DockerService.cs",
-              "DocumentMoniker": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Infrastructure\\Services\\DockerService.cs",
-              "RelativeDocumentMoniker": "Infrastructure\\Services\\DockerService.cs",
-              "ToolTip": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Infrastructure\\Services\\DockerService.cs",
-              "RelativeToolTip": "Infrastructure\\Services\\DockerService.cs",
-              "ViewState": "AgIAAJQAAAAAAAAAAAAqwJkAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T08:26:57.668Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DockerController.cs",
-              "DocumentMoniker": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\DockerController.cs",
-              "RelativeDocumentMoniker": "Presentation\\Controller\\DockerController.cs",
-              "ToolTip": "C:\\Custom\\Softwares\\Git\\Software\\CloudHosting\\Presentation\\Controller\\DockerController.cs",
-              "RelativeToolTip": "Presentation\\Controller\\DockerController.cs",
-              "ViewState": "AgIAAFAAAAAAAAAAAAAqwGkAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-11T08:19:31.042Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"

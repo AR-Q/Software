@@ -1,6 +1,5 @@
 using CloudHosting.Core.Interfaces;
 using CloudHosting.Infrastructure.Config;
-using Microsoft.IdentityModel.Tokens;
 using System.IO.Compression;
 
 namespace CloudHosting.Infrastructure.Services
@@ -18,6 +17,11 @@ namespace CloudHosting.Infrastructure.Services
 
         public async Task<string> SaveAndExtractZipAsync(IFormFile file, string newImageName, string userId)
         {
+
+            if (string.IsNullOrEmpty((string)userId))
+            {
+                throw new UnauthorizedAccessException("Invalid user id");
+            }
 
             if (file.Length > FileStorageOptions.MaxFileSizeBytes)
             {
@@ -88,14 +92,13 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetUserDirectoriesAsync(string token)
+        public async Task<IEnumerable<string>> GetUserDirectoriesAsync(string userId)
         {
             try
             {
-                var userId = await _iamService.GetUserIdFromTokenAsync(token);
                 if (string.IsNullOrEmpty(userId))
                 {
-                    throw new UnauthorizedAccessException("Invalid token");
+                    throw new UnauthorizedAccessException("Invalid userId");
                 }
 
                 var userBasePath = Path.Combine(FileStorageOptions.BasePath, userId);
@@ -115,15 +118,13 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        public async Task<IEnumerable<string?>> GetUserDockerImagesAsync(string token)
+        public async Task<IEnumerable<string?>> GetUserDockerImagesAsync(string userId)
         {
             try
             {
-                // using IAM service
-                var userId = await _iamService.GetUserIdFromTokenAsync(token);
                 if (string.IsNullOrEmpty(userId))
                 {
-                    throw new UnauthorizedAccessException("Invalid token");
+                    throw new UnauthorizedAccessException("Invalid user id");
                 }
 
                 var userBasePath = Path.Combine(FileStorageOptions.BasePath, userId);
