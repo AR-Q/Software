@@ -1,4 +1,0 @@
-wwwroot\index.html
-wwwroot\test.html
-C:\Custom\Softwares\Git\Software\CloudHosting\wwwroot\index.html
-C:\Custom\Softwares\Git\Software\CloudHosting\wwwroot\test.html

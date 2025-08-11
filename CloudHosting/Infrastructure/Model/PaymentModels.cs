@@ -24,6 +24,9 @@ namespace CloudHosting.Infrastructure.Model
         public long RefId { get; set; }
         public string? CardPan { get; set; }
         public string? CardHash { get; set; }
+        public int UserId { get; set; }
+        public int PlanId { get; set; }
+        public string TransactionId => RefId.ToString();
     }
 
     public class PaymentException : Exception
@@ -62,5 +65,12 @@ namespace CloudHosting.Infrastructure.Model
         public long ref_id { get; set; }
         public int fee_type { get; set; }
         public int fee { get; set; }
+        public MetaData? metadata { get; set; }
+    }
+
+    internal class MetaData
+    {
+        public int user_id { get; set; }
+        public int plan_id { get; set; }
     }
 }

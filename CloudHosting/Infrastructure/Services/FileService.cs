@@ -1,65 +1,47 @@
 using CloudHosting.Core.Interfaces;
 using CloudHosting.Infrastructure.Config;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IO.Compression;
 
 namespace CloudHosting.Infrastructure.Services
 {
     public class FileService : IFileService
     {
-        private readonly string _basePath;
-        private readonly string _tempPath;
         private readonly ILogger<FileService> _logger;
-        private readonly FileStorageOptions _options;
+        private readonly IIamService _iamService;
 
-        public FileService(IOptions<FileStorageOptions> options, ILogger<FileService> logger)
+        public FileService(ILogger<FileService> logger, IIamService iamService)
         {
-            _options = options.Value;
             _logger = logger;
-            _basePath = _options.BasePath;
-            _tempPath = _options.TempPath;
-            
-            Directory.CreateDirectory(_basePath);
-            Directory.CreateDirectory(_tempPath);
+            _iamService = iamService;
         }
 
-        public string GetUserBasePath(string userId)
+        public async Task<string> SaveAndExtractZipAsync(IFormFile file, string newImageName, string userId)
         {
-            var path = Path.Combine(_basePath, userId);
-            Directory.CreateDirectory(path);
-            return path;
-        }
 
-        public string GetUserTempPath(string userId)
-        {
-            var path = Path.Combine(_tempPath, userId);
-            Directory.CreateDirectory(path);
-            return path;
-        }
-
-        public async Task<string> SaveAndExtractZipAsync(IFormFile file, string imageName, string userId)
-        {
-            if (file.Length > _options.MaxFileSizeBytes)
+            if (file.Length > FileStorageOptions.MaxFileSizeBytes)
             {
-                throw new InvalidOperationException($"File size exceeds maximum allowed size of {_options.MaxFileSizeBytes / 1024 / 1024}MB");
+                throw new InvalidOperationException($"File size exceeds maximum allowed size of {FileStorageOptions.MaxFileSizeBytes / 1024 / 1024}MB");
             }
 
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-            if (!_options.AllowedExtensions.Contains(extension))
+
+            if (!FileStorageOptions.AllowedExtensions.Contains(extension))
             {
                 throw new InvalidOperationException($"File type {extension} is not allowed");
             }
 
-            var tempPath = Path.Combine(GetUserTempPath(userId), imageName);
-            var buildPath = Path.Combine(GetUserBasePath(userId), imageName);
-            Directory.CreateDirectory(tempPath);
-            Directory.CreateDirectory(buildPath);
+            var userTempPath = Path.Combine(Path.Combine(FileStorageOptions.TempPath, userId), newImageName);
+            var userBuildPath = Path.Combine(Path.Combine(FileStorageOptions.BasePath, userId), newImageName);
+
+            Directory.CreateDirectory(userTempPath);
+            Directory.CreateDirectory(userBuildPath);
 
             try
             {
-
                 // Save zip to temp
-                var zipPath = Path.Combine(tempPath, "upload.zip");
+                var zipPath = Path.Combine(userTempPath, "upload.zip");
+
                 using (var stream = new FileStream(zipPath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -67,6 +49,7 @@ namespace CloudHosting.Infrastructure.Services
 
                 // Verify and extract
                 bool hasDockerfile = false;
+
                 using (var archive = ZipFile.OpenRead(zipPath))
                 {
                     // Check for Dockerfile
@@ -86,91 +69,85 @@ namespace CloudHosting.Infrastructure.Services
                 }
 
                 // Extract to build path
-                ZipFile.ExtractToDirectory(zipPath, buildPath, true);
+                ZipFile.ExtractToDirectory(zipPath, userBuildPath, true);
 
-                return buildPath;
+                return userBuildPath;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to process upload for user {UserId}", userId);
-                CleanupBuildContext(buildPath);
-                CleanupBuildContext(tempPath);
+
+                CleanupBuildContext(userBuildPath);
+                CleanupBuildContext(userTempPath);
+
                 throw;
             }
             finally
             {
-                CleanupBuildContext(tempPath);
+                CleanupBuildContext(userTempPath);
             }
         }
 
+        public async Task<IEnumerable<string>> GetUserDirectoriesAsync(string token)
+        {
+            try
+            {
+                var userId = await _iamService.GetUserIdFromTokenAsync(token);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new UnauthorizedAccessException("Invalid token");
+                }
 
-        //public async Task<string> SaveAndExtractZipAsync2(IFormFile file)
-        //{
-        //    if (file.Length > _options.MaxFileSizeBytes)
-        //    {
-        //        throw new InvalidOperationException($"File size exceeds maximum allowed size of {_options.MaxFileSizeBytes / 1024 / 1024}MB");
-        //    }
+                var userBasePath = Path.Combine(FileStorageOptions.BasePath, userId);
 
-        //    var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        //    if (!_options.AllowedExtensions.Contains(extension))
-        //    {
-        //        throw new InvalidOperationException($"File type {extension} is not allowed");
-        //    }
+                if (!Directory.Exists(userBasePath))
+                {
+                    return Enumerable.Empty<string>();
+                }
 
-        //    //var buildId = Guid.NewGuid().ToString();
-        //    var buildId = "user1";
-        //    var tempPath = Path.Combine(_tempPath, buildId);
-        //    var buildPath = Path.Combine(_tempPath, buildId);
+                return Directory.GetDirectories(userBasePath)
+                    .Select(path => Path.GetFileName(path));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get directories for user");
+                throw;
+            }
+        }
 
-        //    try
-        //    {
-        //        Directory.CreateDirectory(tempPath);
-        //        Directory.CreateDirectory(buildPath);
+        public async Task<IEnumerable<string?>> GetUserDockerImagesAsync(string token)
+        {
+            try
+            {
+                // using IAM service
+                var userId = await _iamService.GetUserIdFromTokenAsync(token);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new UnauthorizedAccessException("Invalid token");
+                }
 
-        //        // Save zip to temp
-        //        var zipPath = Path.Combine(tempPath, "upload.zip");
-        //        using (var stream = new FileStream(zipPath, FileMode.Create))
-        //        {
-        //            await file.CopyToAsync(stream);
-        //        }
+                var userBasePath = Path.Combine(FileStorageOptions.BasePath, userId);
+                
+                if (!Directory.Exists(userBasePath))
+                {
+                    return Enumerable.Empty<string>();
+                }
 
-        //        // Verify and extract
-        //        bool hasDockerfile = false;
-        //        using (var archive = ZipFile.OpenRead(zipPath))
-        //        {
-        //            // Check for Dockerfile
-        //            foreach (var entry in archive.Entries)
-        //            {
-        //                if (entry.FullName.Equals("Dockerfile", StringComparison.OrdinalIgnoreCase))
-        //                {
-        //                    hasDockerfile = true;
-        //                    break;
-        //                }
-        //            }
+                // all directories that contain a Dockerfile
 
-        //            if (!hasDockerfile)
-        //            {
-        //                throw new InvalidDataException("ZIP file must contain a Dockerfile");
-        //            }
-        //        }
+                IEnumerable<string> dockerDirectoryNames = ["..."];
 
-        //        // Extract to build path
-        //        ZipFile.ExtractToDirectory(zipPath, buildPath, true);
+                return dockerDirectoryNames.Concat(Directory.GetDirectories(userBasePath)
+                    .Where(dir => File.Exists(Path.Combine(dir, "Dockerfile")))
+                    .Select(x => Path.GetDirectoryName(x)));
 
-        //        return buildPath;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Failed to process upload for user");
-        //        CleanupBuildContext(buildPath);
-        //        CleanupBuildContext(tempPath);
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        CleanupBuildContext(tempPath);
-        //    }
-        ////}
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get docker directories for user");
+                throw;
+            }
+        }
 
         public void CleanupBuildContext(string path)
         {

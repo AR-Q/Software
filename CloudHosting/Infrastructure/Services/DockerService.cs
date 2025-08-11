@@ -151,14 +151,14 @@ namespace CloudHosting.Infrastructure.Services
             }
         }
 
-        public async Task<Model.ResourceInfo> GetResourceInfoAsync()
+        public async Task<ResourceInfo> GetResourceInfoAsync()
         {
             try
             {
                 _logger.LogInformation("Retrieving Docker resource information");
                 
                 var info = await _client.System.GetSystemInfoAsync();
-                var resourceInfo = new Model.ResourceInfo();
+                var resourceInfo = new ResourceInfo();
                 
                 // Get running containers
                 var containers = await _client.Containers.ListContainersAsync(new ContainersListParameters

@@ -87,7 +87,9 @@ namespace CloudHosting.Infrastructure.Services
                     Amount = amount,
                     RefId = result.data.ref_id,
                     CardPan = result.data.card_pan,
-                    CardHash = result.data.card_hash
+                    CardHash = result.data.card_hash,
+                    UserId = result.data.metadata?.user_id ?? 0,
+                    PlanId = result.data.metadata?.plan_id ?? 0
                 };
             }
             catch (Exception ex)

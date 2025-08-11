@@ -7,21 +7,14 @@ namespace CloudHosting.Presentation.Controller
     [VerifyUser]
     [ApiController]
     [Route("api/[controller]")]
-    public class DockerController : ControllerBase
+    public class DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService, IFileService fileService) : ControllerBase
     {
-        private readonly IDockerService _dockerService;
-        private readonly ICloudPlanService _cloudPlanService;
-        private readonly IFileService _fileService; // Add IFileService
-
-        public DockerController(IDockerService dockerService, ICloudPlanService cloudPlanService, IFileService fileService)
-        {
-            _dockerService = dockerService;
-            _cloudPlanService = cloudPlanService;
-            _fileService = fileService; // Initialize IFileService
-        }
+        private readonly IDockerService _dockerService = dockerService;
+        private readonly ICloudPlanService _cloudPlanService = cloudPlanService;
+        private readonly IFileService _fileService = fileService;
 
         [HttpPost("build")]
-        public async Task<IActionResult> BuildImage( IFormFile file, [FromForm] string imageName, [FromForm] string userId)
+        public async Task<IActionResult> BuildImage([FromForm] IFormFile file, [FromForm] string imageName, [FromForm] string userId)
         {
             try
             {
@@ -109,6 +102,20 @@ namespace CloudHosting.Presentation.Controller
             {
                 var info = await _dockerService.GetResourceInfoAsync();
                 return Ok(info);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
+
+        [HttpGet("list")]
+        public async Task<IActionResult> ListImages([FromHeader] string token)
+        {
+            try
+            {
+                var images = await _fileService.GetUserDockerImagesAsync(token);
+                return Ok(new { Images = images });
             }
             catch (Exception ex)
             {

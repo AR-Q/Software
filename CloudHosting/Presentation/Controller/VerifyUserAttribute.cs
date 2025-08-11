@@ -27,6 +27,7 @@ public class VerifyUserAttribute : Attribute, IAsyncActionFilter
             var response = new HttpResponseMessage();
             var json = JsonSerializer.Serialize(new { token });
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // IF STATEMENT FOR DEV ONLY ENVIORNMENT
             if (isDev)
             {
                 response.StatusCode = System.Net.HttpStatusCode.OK;

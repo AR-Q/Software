@@ -1,6 +1,0 @@
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.GeneratedMSBuildEditorConfig.editorconfig
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.AssemblyInfoInputs.cache
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.AssemblyInfo.cs
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.csproj.CoreCompileInputs.cache
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.MvcApplicationPartsAssemblyInfo.cache
-C:\Custom\Softwares\Git\Software\CloudHosting\obj\Debug\net10.0\CloudHosting.sourcelink.json

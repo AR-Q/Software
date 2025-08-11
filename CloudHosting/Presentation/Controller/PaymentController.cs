@@ -17,9 +17,24 @@ namespace CloudHosting.Presentation.Controller
             _paymentService = paymentService;
         }
 
-        [HttpGet]
+        [HttpGet("plans")]
         [VerifyUser]
         public async Task<IActionResult> GetPlans(int userId)
+        {
+            var plans = await _planService.GetActivePlansAsync(userId);
+            return Ok(plans);
+        }
+
+        [HttpGet("available")]
+        public async Task<IActionResult> GetAvailablePlans()
+        {
+            var plans = await _planService.GetAvailablePlansAsync();
+            return Ok(plans);
+        }
+
+        [HttpGet("active")]
+        [VerifyUser]
+        public async Task<IActionResult> GetActivePlans(int userId)
         {
             var plans = await _planService.GetActivePlansAsync(userId);
             return Ok(plans);
@@ -50,7 +65,8 @@ namespace CloudHosting.Presentation.Controller
             
             if (verification.Status == 100)
             {
-                // Add subscription to user
+                // Add subscription to user after successful payment
+                await _planService.AddUserPlanAsync(verification.UserId, verification.PlanId, verification.TransactionId);
                 return Ok("Payment successful");
             }
 

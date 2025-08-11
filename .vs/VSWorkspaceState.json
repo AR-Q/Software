@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\CloudHosting",
+    "\\CloudHosting\\Core",
+    "\\CloudHosting\\Core\\Interfaces",
+    "\\CloudHosting\\Infrastructure",
+    "\\CloudHosting\\Infrastructure\\Services"
   ],
-  "SelectedNode": "\\CloudHosting.sln",
+  "SelectedNode": "\\CloudHosting\\Infrastructure\\Services\\FileService.cs",
   "PreviewInSolutionExplorer": false
 }

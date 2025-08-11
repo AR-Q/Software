@@ -1,8 +1,6 @@
 using CloudHosting.Core.Interfaces;
-using CloudHosting.Infrastructure.Data;
 using CloudHosting.Infrastructure.Middleware;
 using CloudHosting.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,9 +42,6 @@ builder.Services.AddScoped<IPaymentService, ZarinPalService>();
 builder.Services.AddSingleton<IDockerService, DockerService>();
 builder.Services.AddSingleton<ICloudPlanService, CloudPlanService>();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<CloudHostingDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IFileStorageService, SqlFileStorageService>();
 var app = builder.Build();
 
 // error handling
@@ -55,7 +50,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 // swagger
 app.UseSwagger();
 app.UseSwaggerUI(c => {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CloudHosting API v2");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CloudHosting API v1");
 });
 
 // health checks endpoint
